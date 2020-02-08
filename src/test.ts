@@ -79,6 +79,8 @@ async function test() {
         let user: AmazonUser = await AmazonUser.getUserWithProactiveEndpoint('AmazonUser', skillId);
 
         console.log("User: " + inspect(user));
+
+//        console.log(await AmazonUser.remove(user));
 /*
         getConnection('amazon')
             .getRepository<AmazonApiEndpoint>("AmazonUser")
