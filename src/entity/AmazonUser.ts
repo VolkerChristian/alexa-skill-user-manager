@@ -1,6 +1,6 @@
 //import "reflect-metadata";
 require('reflect-metadata');
-import { Entity, Index, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, getConnection, UpdateDateColumn, CreateDateColumn, VersionColumn } from "typeorm";
+import { Entity, Index, PrimaryGeneratedColumn, Column, ManyToOne, getConnection, UpdateDateColumn, CreateDateColumn, VersionColumn, DeleteResult } from "typeorm";
 import { AmazonApiEndpoint } from './AmazonApiEndpoint';
 
 @Entity()
@@ -41,7 +41,8 @@ export class AmazonUser {
 
     static getUserWithProactiveEndpoint(userId: string, skillId: string) {
         return new Promise<AmazonUser>((resolve, reject) => {
-            getConnection('amazon').getRepository<AmazonUser>('AmazonUser')
+            getConnection('amazon')
+                .getRepository<AmazonUser>('AmazonUser')
                 .createQueryBuilder('user')
                 .leftJoinAndMapOne(
                     'user.amazonApiEndpoint',
@@ -55,10 +56,46 @@ export class AmazonUser {
                     "amazonApiEndpoint.applicationId = :skillId", { skillId: skillId }
                 )
                 .getOne()
-                .then((user) => {
-                    resolve(user)
-                })
+                .then((user) => resolve(user))
                 .catch((reason) => reject(reason))
+        });
+    }
+
+    static remove(user: AmazonUser) {
+        return new Promise<AmazonUser>((resolve, reject) => {
+            getConnection('amazon')
+                .getRepository<AmazonUser>('AmazonUser')
+                .remove(user)
+                .then(value => resolve(value))
+                .catch(reason => resolve(reason));
+        })
+    }
+
+    static delete(userId: string, skillId: string) {
+        return new Promise<DeleteResult>((resolve, reject) => {
+            getConnection('amazon')
+                .getRepository<AmazonUser>('AmazonUser')
+                .createQueryBuilder()
+                .delete()
+                .where(
+                    'userId = :userId', { userId: userId }
+                )
+                .andWhere(
+                    'applicationId = :skillId', { skillId: skillId }
+                )
+                .execute()
+                .then(value => resolve(value))
+                .catch(reason => resolve(reason));
+        })
+    }
+
+    static save(user: AmazonUser) {
+        return new Promise<AmazonUser>((resolve, reject) => {
+            getConnection('amazon')
+                .getRepository<AmazonUser>('AmazonUser')
+                .save(user)
+                .then(user => resolve(user))
+                .catch(reason => reject(reason));
         });
     }
 
@@ -75,9 +112,7 @@ export class AmazonUser {
                     'user.userId = :userId', { userId: userId }
                 )
                 .getOne()
-                .then((user) => {
-                    resolve(user)
-                })
+                .then((user) => resolve(user))
                 .catch((reason) => reject(reason))
         });
     }
