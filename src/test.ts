@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { createConnection, getConnection, getRepository, getManager, getCustomRepository } from "typeorm";
+import { createConnection, getRepository } from "typeorm";
 import { AmazonUser } from './entity/AmazonUser';
 import { AmazonApiEndpoint } from "./entity/AmazonApiEndpoint";
 import { inspect } from 'util';
@@ -8,7 +8,7 @@ function dropTables() {
     return new Promise(async function (resolve, reject) {
         console.log("Start Drop Tables");
         try {
-            let connection = await createConnection('amazon');
+            let connection = await createConnection();
             let queryRunner = connection.createQueryRunner();
 
             await queryRunner.query("DROP TABLE amazon_user");
@@ -35,9 +35,7 @@ function insertData() {
             amazonUser.applicationId = "SkillID";
             amazonUser.userId = "AmazonUser";
             amazonUser.created = new Date();
-            await getConnection('amazon')
-                .getRepository<AmazonApiEndpoint>("AmazonUser")
-                .save(amazonUser);
+            await getRepository<AmazonApiEndpoint>("AmazonUser").save(amazonUser);
             // await connection.manager.save(amazonUser);
 
             const amazonApiEndpoint = new AmazonApiEndpoint();
@@ -45,14 +43,11 @@ function insertData() {
             amazonApiEndpoint.applicationId = "SkillID";
             amazonApiEndpoint.created = new Date();
             amazonApiEndpoint.expires = new Date(Date.now() + 100000); // +100 Seconds
-            const amazonApiEndpointI: AmazonApiEndpoint = await getConnection('amazon')
-                .getRepository<AmazonApiEndpoint>("AmazonApiEndpoint")
+            const amazonApiEndpointI: AmazonApiEndpoint = await getRepository<AmazonApiEndpoint>("AmazonApiEndpoint")
                 .save(amazonApiEndpoint);
 
             amazonUser.amazonApiEndpoint = amazonApiEndpointI;
-            await getConnection('amazon')
-                .getRepository<AmazonApiEndpoint>("AmazonUser")
-                .save(amazonUser);
+            await getRepository<AmazonApiEndpoint>("AmazonUser").save(amazonUser);
             // await connection.manager.save(amazonUser);
 
             resolve();
@@ -67,7 +62,7 @@ async function test() {
 //        await dropTables();
 
         //let connection =
-        await createConnection('amazon');
+        await createConnection();
 
         await insertData();
 
@@ -82,8 +77,7 @@ async function test() {
 
 //        console.log(await AmazonUser.remove(user));
 /*
-        getConnection('amazon')
-            .getRepository<AmazonApiEndpoint>("AmazonUser")
+            getRepository<AmazonApiEndpoint>("AmazonUser")
             .save(user);
 */
         console.log("Ready");

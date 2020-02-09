@@ -1,6 +1,17 @@
 //import "reflect-metadata";
 require('reflect-metadata');
-import { Column, CreateDateColumn, DeleteResult, Entity, getConnection, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    DeleteResult,
+    Entity,
+    Index,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    VersionColumn,
+    getRepository
+} from "typeorm";
 import { AmazonApiEndpoint } from './AmazonApiEndpoint';
 
 @Entity()
@@ -41,8 +52,7 @@ export class AmazonUser {
 
     static getUserWithProactiveEndpoint(userId: string, skillId: string) {
         return new Promise<AmazonUser>((resolve, reject) => {
-            getConnection('amazon')
-                .getRepository<AmazonUser>('AmazonUser')
+            getRepository<AmazonUser>('AmazonUser')
                 .createQueryBuilder('user')
                 .leftJoinAndMapOne(
                     'user.amazonApiEndpoint',
@@ -63,8 +73,7 @@ export class AmazonUser {
 
     static remove(user: AmazonUser) {
         return new Promise<AmazonUser>((resolve, reject) => {
-            getConnection('amazon')
-                .getRepository<AmazonUser>('AmazonUser')
+            getRepository<AmazonUser>('AmazonUser')
                 .remove(user)
                 .then(value => resolve(value))
                 .catch(reason => resolve(reason));
@@ -73,8 +82,7 @@ export class AmazonUser {
 
     static delete(userId: string, skillId: string) {
         return new Promise<DeleteResult>((resolve, reject) => {
-            getConnection('amazon')
-                .getRepository<AmazonUser>('AmazonUser')
+            getRepository<AmazonUser>('AmazonUser')
                 .createQueryBuilder()
                 .delete()
                 .where(
@@ -91,8 +99,7 @@ export class AmazonUser {
 
     static save(user: AmazonUser) {
         return new Promise<AmazonUser>((resolve, reject) => {
-            getConnection('amazon')
-                .getRepository<AmazonUser>('AmazonUser')
+            getRepository<AmazonUser>('AmazonUser')
                 .save(user)
                 .then(user => resolve(user))
                 .catch(reason => reject(reason));
@@ -101,7 +108,7 @@ export class AmazonUser {
 
     static getUser(userId: string) {
         return new Promise<AmazonUser>((resolve, reject) => {
-            getConnection('amazon').getRepository<AmazonUser>('AmazonUser')
+            getRepository<AmazonUser>('AmazonUser')
                 .createQueryBuilder('user')
                 .leftJoinAndMapOne(
                     'user.amazonApiEndpoint',
