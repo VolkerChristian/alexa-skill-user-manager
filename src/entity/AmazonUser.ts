@@ -1,6 +1,6 @@
 //import "reflect-metadata";
 require('reflect-metadata');
-import { Entity, Index, PrimaryGeneratedColumn, Column, ManyToOne, getConnection, UpdateDateColumn, CreateDateColumn, VersionColumn, DeleteResult } from "typeorm";
+import { Column, CreateDateColumn, DeleteResult, Entity, getConnection, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
 import { AmazonApiEndpoint } from './AmazonApiEndpoint';
 
 @Entity()

@@ -69,7 +69,7 @@ async function test() {
         //let connection =
         await createConnection('amazon');
 
-//        await insertData();
+        await insertData();
 
 
         console.log("Start");
