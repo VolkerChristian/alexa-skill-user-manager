@@ -29,10 +29,10 @@ export class AmazonUser {
     @Column("varchar", { length: 255 })
     applicationId: string;
 
-    @Column()
+    @Column({ default: false })
     accountLinked: boolean;
 
-    @Column()
+    @Column({ default: false })
     proactivePermission: boolean;
 
     @Column("varchar", { length: 1023 })

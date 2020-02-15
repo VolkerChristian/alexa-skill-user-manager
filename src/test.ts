@@ -38,9 +38,8 @@ function insertData() {
             await getRepository<AmazonApiEndpoint>("AmazonUser").save(amazonUser);
             // await connection.manager.save(amazonUser);
 
-            const amazonApiEndpoint = new AmazonApiEndpoint();
+            const amazonApiEndpoint = new AmazonApiEndpoint("SkillID");
             amazonApiEndpoint.apiAccessToken = "AccessToken";
-            amazonApiEndpoint.applicationId = "SkillID";
             amazonApiEndpoint.created = new Date();
             amazonApiEndpoint.expires = new Date(Date.now() + 100000); // +100 Seconds
             const amazonApiEndpointI: AmazonApiEndpoint = await getRepository<AmazonApiEndpoint>("AmazonApiEndpoint")

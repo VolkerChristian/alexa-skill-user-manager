@@ -1,8 +1,9 @@
 import { AmazonUser } from './entity/AmazonUser';
-import { AmazonApiEndpoint } from './entity/AmazonApiEndpoint';
+import { AmazonApiEndpoint, getApiToken } from './entity/AmazonApiEndpoint';
 
 
 export {
     AmazonUser,
-    AmazonApiEndpoint
+    AmazonApiEndpoint,
+    getApiToken
 }
