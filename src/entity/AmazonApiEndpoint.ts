@@ -17,7 +17,7 @@ import {
 import ClientOAuth2, {
     RequestObject
 } from 'client-oauth2';
-import amzConfig from '../../amzconfig.json';
+import amzConfig from '../amzconfig.json';
 
 @Entity()
 export class AmazonApiEndpoint {

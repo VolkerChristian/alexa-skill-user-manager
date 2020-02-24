@@ -4,6 +4,7 @@ import { AmazonUser } from './entity/AmazonUser';
 import { AmazonApiEndpoint } from "./entity/AmazonApiEndpoint";
 import { inspect } from 'util';
 
+
 function dropTables() {
     return new Promise(async function (resolve, reject) {
         console.log("Start Drop Tables");
@@ -40,6 +41,7 @@ function insertData() {
 
             const amazonApiEndpoint = new AmazonApiEndpoint("SkillID");
             amazonApiEndpoint.apiAccessToken = "AccessToken";
+            amazonApiEndpoint.tokenType = "Bearer";
             amazonApiEndpoint.created = new Date();
             amazonApiEndpoint.expires = new Date(Date.now() + 100000); // +100 Seconds
             const amazonApiEndpointI: AmazonApiEndpoint = await getRepository<AmazonApiEndpoint>("AmazonApiEndpoint")
@@ -63,7 +65,7 @@ async function test() {
         //let connection =
         await createConnection();
 
-        await insertData();
+//        await insertData();
 
 
         console.log("Start");
@@ -75,10 +77,10 @@ async function test() {
         console.log("User: " + inspect(user));
 
 //        console.log(await AmazonUser.remove(user));
-/*
-            getRepository<AmazonApiEndpoint>("AmazonUser")
-            .save(user);
-*/
+
+//        getRepository<AmazonApiEndpoint>("AmazonUser")
+//            .save(user);
+
         console.log("Ready");
     } catch (err) {
         console.log(err);
@@ -90,6 +92,9 @@ try {
 } catch (err) {
     console.log(err);
 }
+
+
+
 /*
 joinQueryBuilder
     .innerJoinAndMapOne(
