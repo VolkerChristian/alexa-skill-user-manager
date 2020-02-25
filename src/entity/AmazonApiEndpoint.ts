@@ -1,5 +1,3 @@
-//import "reflect-metadata";
-require('reflect-metadata');
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -21,10 +19,10 @@ import amzConfig from '../amzconfig.json';
 
 @Entity()
 export class AmazonApiEndpoint {
-
     constructor(applicationId: string) {
         this.applicationId = applicationId;
     }
+
     @PrimaryGeneratedColumn()
     id: number;
 

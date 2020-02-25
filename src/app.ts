@@ -1,15 +1,37 @@
-import "reflect-metadata";
 import { createConnection, getRepository } from "typeorm";
-import { AmazonUser } from './entity/AmazonUser';
-import { AmazonApiEndpoint } from "./entity/AmazonApiEndpoint";
 import { inspect } from 'util';
+import {
+    AmazonUser,
+    AmazonApiEndpoint,
+    getAmazonUserRepository,
+    getAmazonApiEndpointRepository,
+    getEntities,
+    setConnection
+} from './';
 
 
+export async function connect() {
+    let connection = await createConnection({
+        type: "mysql",
+        host: "proliant.home.vchrist.at",
+        port: 3306,
+        username: "wastereminder",
+        password: "!!!SoMaSi01!!!",
+        database: "WasteReminder",
+        synchronize: true,
+        logging: false,
+        entities: getEntities()
+    });
+
+    return connection;
+}
+
+/*
 function dropTables() {
     return new Promise(async function (resolve, reject) {
         console.log("Start Drop Tables");
         try {
-            let connection = await createConnection();
+            let connection = await connect();
             let queryRunner = connection.createQueryRunner();
 
             await queryRunner.query("DROP TABLE amazon_user");
@@ -23,11 +45,13 @@ function dropTables() {
         }
     })
 }
+*/
 
 function insertData() {
     return new Promise(async function (resolve, reject) {
         console.log("Start Insert Data");
         try {
+            /*
             const amazonUser = new AmazonUser();
             amazonUser.accountLinked = true;
             amazonUser.proactivePermission = true;
@@ -36,20 +60,18 @@ function insertData() {
             amazonUser.applicationId = "SkillID";
             amazonUser.userId = "AmazonUser";
             amazonUser.created = new Date();
-            await getRepository<AmazonApiEndpoint>("AmazonUser").save(amazonUser);
-            // await connection.manager.save(amazonUser);
-
+            await getAmazonUserRepository().save(amazonUser);
+*/
             const amazonApiEndpoint = new AmazonApiEndpoint("SkillID");
             amazonApiEndpoint.apiAccessToken = "AccessToken";
             amazonApiEndpoint.tokenType = "Bearer";
             amazonApiEndpoint.created = new Date();
             amazonApiEndpoint.expires = new Date(Date.now() + 100000); // +100 Seconds
-            const amazonApiEndpointI: AmazonApiEndpoint = await getRepository<AmazonApiEndpoint>("AmazonApiEndpoint")
-                .save(amazonApiEndpoint);
 
-            amazonUser.amazonApiEndpoint = amazonApiEndpointI;
-            await getRepository<AmazonApiEndpoint>("AmazonUser").save(amazonUser);
-            // await connection.manager.save(amazonUser);
+            const amazonApiEndpointI: AmazonApiEndpoint = await getAmazonApiEndpointRepository().save(amazonApiEndpoint);
+            
+//            amazonUser.amazonApiEndpoint = amazonApiEndpointI;
+//            await getAmazonUserRepository().save(amazonUser);
 
             resolve();
         } catch (err) {
@@ -58,28 +80,53 @@ function insertData() {
     })
 }
 
+
+connect()
+    .then(async connection => {
+        setConnection(connection);
+
+        await insertData();
+
+        console.log("Start");
+
+        let skillId = 'SkillID';
+
+        let user: AmazonUser = await getAmazonUserRepository().getUserWithProactiveEndpoint('AmazonUser', skillId);
+
+        console.log("User: " + inspect(user));
+
+        console.log(await getAmazonUserRepository().remove(user));
+
+        console.log("Ready");
+    }).catch(err => {
+        console.log(err);
+    });
+
+
+/*
 async function test() {
     try {
-//        await dropTables();
+        //        await dropTables();
 
         //let connection =
-        await createConnection();
+        let connection = await connect();
+        setConnection(connection);
 
-//        await insertData();
+        //        await insertData();
 
 
         console.log("Start");
 
         let skillId = 'SkillID';
 
-        let user: AmazonUser = await AmazonUser.getUserWithProactiveEndpoint('AmazonUser', skillId);
+        let user: AmazonUser = await getAmazonUserRepository().getUserWithProactiveEndpoint('AmazonUser', skillId);
 
         console.log("User: " + inspect(user));
 
-//        console.log(await AmazonUser.remove(user));
+        //        console.log(await AmazonUser.remove(user));
 
-//        getRepository<AmazonApiEndpoint>("AmazonUser")
-//            .save(user);
+        //        getRepository<AmazonApiEndpoint>("AmazonUser")
+        //            .save(user);
 
         console.log("Ready");
     } catch (err) {
@@ -93,7 +140,7 @@ try {
     console.log(err);
 }
 
-
+*/
 
 /*
 joinQueryBuilder
