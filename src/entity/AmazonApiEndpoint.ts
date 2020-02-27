@@ -15,7 +15,6 @@ import {
 import ClientOAuth2, {
     RequestObject
 } from 'client-oauth2';
-import amzConfig from '../amzconfig.json';
 
 @Entity()
 export class AmazonApiEndpoint {
@@ -72,7 +71,11 @@ export class AmazonApiEndpoint {
 }
 
 
-const aptAuth: ClientOAuth2 = new ClientOAuth2(amzConfig.aptOAuth2Config);
+let aptAuth: ClientOAuth2;
+
+export function setOAuth2Config(oauth2Config: ClientOAuth2.Options) {
+    aptAuth = new ClientOAuth2(oauth2Config);
+}
 
 
 const refreshToken = (endPoint: AmazonApiEndpoint) => {

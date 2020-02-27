@@ -16,7 +16,7 @@
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,
       "declaration": true,
-//      "declarationMap": true,
+      "declarationMap": true,
       "inlineSourceMap": true,
       "inlineSources": true
    },

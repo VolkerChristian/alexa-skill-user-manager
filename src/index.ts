@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import { AmazonUser } from './entity/AmazonUser';
-import { AmazonApiEndpoint, getApiToken } from './entity/AmazonApiEndpoint';
+import { AmazonApiEndpoint, getApiToken, setOAuth2Config as epSetOAuth2Config } from './entity/AmazonApiEndpoint';
 import { Connection, createConnection } from 'typeorm';
 import { AmazonUserRepository } from './AmazonUserRepository';
 import { AmazonApiEndpointRepository } from './AmazonApiEndpointRepository';
@@ -23,6 +23,11 @@ export async function connect() {
         logging: false,
         entities: getEntities()
     });
+}
+
+
+export function setOAuth2Config(oAuth2Config) {
+    epSetOAuth2Config(oAuth2Config);
 }
 
 
