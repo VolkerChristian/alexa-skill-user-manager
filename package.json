@@ -1,5 +1,5 @@
 {
-   "name": "wastereminder",
+   "name": "alexa-skill-user-manager",
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
    "devDependencies": {
@@ -19,6 +19,10 @@
       "build": "tsc -p ./tsconfig.json",
       "test": "jest"
    },
-   "main": "./build/index.js",
-   "types": "./build/index.d.ts"
+   "main": "build/index",
+   "typings": "build/index",
+   "files": [
+	"src",
+	"build"
+   ]
 }
