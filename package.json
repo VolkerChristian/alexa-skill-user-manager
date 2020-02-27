@@ -11,10 +11,10 @@
       "client-oauth2": "^4.2.5",
       "mysql": "^2.18.1",
       "reflect-metadata": "^0.1.10",
-      "typeorm": "^0.2.22",
-      "util": "^0.12.2"
+      "typeorm": "^0.2.22"
    },
    "scripts": {
+      "prepack": "npm run build",
       "start": "node -r ts-node/register src/index.ts",
       "build": "tsc -p ./tsconfig.json",
       "test": "jest"
