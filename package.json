@@ -1,19 +1,28 @@
 {
-   "name": "wastereminder",
+   "name": "alexa-skill-user-manager",
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
    "devDependencies": {
+      "@types/node": "^8.10.66",
       "ts-node": "3.3.0",
-      "@types/node": "^8.0.29",
       "typescript": "3.3.3333"
    },
    "dependencies": {
+      "client-oauth2": "^4.3.3",
       "mysql": "^2.18.1",
       "reflect-metadata": "^0.1.10",
-      "typeorm": "^0.2.22"
+      "typeorm": "^0.2.29"
    },
    "scripts": {
-      "start": "ts-node src/test.ts"
+      "prepack": "npm run build",
+      "start": "node -r ts-node/register src/index.ts",
+      "build": "tsc -p ./tsconfig.json",
+      "test": "jest"
    },
-   "main": "src/index.ts"
+   "main": "build/index",
+   "typings": "build/index",
+   "files": [
+      "src",
+      "build"
+   ]
 }

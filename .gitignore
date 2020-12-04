@@ -4,3 +4,4 @@ node_modules/
 build/
 tmp/
 temp/
+/alexa-skill-user-manager-0.0.1.tgz

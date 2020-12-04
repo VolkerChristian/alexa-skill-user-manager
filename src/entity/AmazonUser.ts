@@ -1,5 +1,3 @@
-//import "reflect-metadata";
-require('reflect-metadata');
 import {
     Column,
     CreateDateColumn,
@@ -49,7 +47,7 @@ export class AmazonUser {
 
     @VersionColumn()
     version: Number;
-
+/*
     static getUserWithProactiveEndpoint(userId: string, skillId: string) {
         return new Promise<AmazonUser>((resolve, reject) => {
             getRepository<AmazonUser>('AmazonUser')
@@ -123,4 +121,5 @@ export class AmazonUser {
                 .catch((reason) => reject(reason))
         });
     }
+    */
 }
